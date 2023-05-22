@@ -1,0 +1,113 @@
+:root{
+    --color_1:hsl(0, 0%, 19%);
+    --color_2:hsl(60, 100%, 76%);
+    --color_3:hsl(120, 100%, 73%);
+    --color_4:rgb(255, 94, 94);
+    --color_5:hsl(188, 100%, 71%);
+}
+
+*,::before,::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: 0;
+    outline: none;
+}
+
+body{
+    width: 100dvw;
+    height: 100dvh;
+    background-color: var(--color_1);
+}
+
+#app_container{
+    width: 100%;
+    height: 100%;
+}
+
+#header{
+    width: 100%;
+    height: calc(4rem + 2vh);
+    background-color: var(--color_2);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#header h1{
+    font-size: 2em;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 700;
+    position: relative;
+    height: 80%;
+}
+
+#content{
+    width: 80%;
+    margin: 20px auto;
+    border-radius: 1px;
+}
+
+#input_todo{
+    width: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px auto;
+}
+
+#input_todo div{
+    width: 80%;
+}
+
+#input_todo #user_input{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+#input_todo #user_input input{
+    flex: 2;
+}
+#input_todo div button{
+    position: relative;
+    width: 100%;
+}
+
+#todo_list, #done_list{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+    gap: 10px;
+    margin: 10px auto;
+}
+
+
+.todo_item *{
+    display: inline-block;
+}
+
+
+.todo_item input{
+    background-color: var(--color_5);
+}
+
+.todo_item input::placeholder{
+    color: rgb(40, 40, 40);
+}
+
+.todo_item input:nth-child(2){
+    width: 50px;
+    text-align: center;
+}
+
+
+
+
