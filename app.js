@@ -1,25 +1,19 @@
 const add_todo_btn = document.querySelector("#input_todo > div:nth-of-type(2) button")
 
+document.addEventListener("DOMContentLoaded",loadTodos)
 
 add_todo_btn.addEventListener("click",addTodo);
+
+var todos = []
+var done_todos = []
 
 function isBlank(str){
     return (str.trim() == "");
 }
 
 function sortTodos(){
-    let todo_list = document.querySelector("#todo_list");
-    //console.log([...todo_list.children].slice(1,));
-    let sorted = todo_list;
-    todo_list.removeChild([...todo_list.children.slice(1,)]);
-
-    [...sorted.children].slice(1,)
-      .sort((a,b)=>{
-        console.log(a.children[0].value)
-        console.log(b.children[0].value)
-        a.children[0].value>=a.children[0].value?1:-1
-    }).forEach(node=>todo_list.appendChild(node));
-    //console.log(todo_list.children)
+    console.log(todos)
+    return todos
 }
 function addTodo(evt){
     const task_name = document.querySelector("#user_input > input:nth-of-type(1)")
@@ -30,20 +24,27 @@ function addTodo(evt){
     }
 
     let todo_list = document.querySelector("#todo_list")
-    const todo_item = document.createElement("div")
-    todo_item.setAttribute("class","todo_item")
-    todo_item.innerHTML = `
-        <input type="text" disabled value="${task_name.value}"></input>
-        <input type="text" disabled value="${task_time.value}")></input>
-        <button onclick=updateTodo(this)>Update</button>
-        <button onclick=deleteTodo(this)>Delete</button>
-    `
-    
-    let todo = Object.assign({},todo_item)
-    console.log(todo)
-    todo_list.appendChild(todo_item);
+    /*
 
-    sortTodos();
+*/
+    let todo = {name:task_name.value,time:task_time.value};
+
+    todos = sortTodos(todos);
+
+    return 
+    todos.forEach((todo)=>{
+        const todo_item = document.createElement("div")
+        todo_item.setAttribute("class","todo_item")
+        todo_item.innerHTML = `
+            <input type="text" disabled value="${todo['name']}"></input>
+            <input type="text" disabled value="${todo['time']}")></input>
+            <button onclick=updateTodo(this)>Update</button>
+            <button onclick=deleteTodo(this)>Delete</button>
+        `
+        todo_list.appendChild(todo_item);
+    })
+
+    localStorage.setItem("todos",JSON.stringify(todos))
 
 }
 
@@ -62,4 +63,16 @@ function updateTodo(evt){
 
 function deleteTodo(evt){
     evt.parentNode.remove()
+}
+
+function loadTodos(evt){
+    if (localStorage.getItem("todos") != null)
+    {
+        todos = localStorage.getItem("todos")
+    }
+    else{
+        todos = []
+    }
+    console.log(todos)
+        
 }
