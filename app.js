@@ -1,166 +1,92 @@
-const add_todo_btn = document.querySelector("#input_todo > div:nth-of-type(2) button")
-const done_todos_section = document.querySelector("#done_list > div:nth-of-type(2)")
+function saveTodo(task) {
+  let stored_todos = JSON.parse(localStorage.getItem("todos"));
+  if (stored_todos != null) {
+    stored_todos.push(task);
 
-document.addEventListener("DOMContentLoaded",loadTodos)
-
-add_todo_btn.addEventListener("click",addTodo);
-
-var todos = []
-var done_todos = []
-var TODAY = new Date()
-let today_date = TODAY.toISOString().split("T")[0]
-
-function isBlank(str){
-    return (str.trim() == "");
+    localStorage.setItem("todos", JSON.stringify(stored_todos));
+    return stored_todos.length - 1;
+  } else {
+    localStorage.setItem("todos", JSON.stringify([task]));
+    return 0;
+  }
 }
 
-function sortTodos(todos_list){
-    todos_list = todos_list.sort((a,b)=>{
-        let a_time = (a["time"]).replace(":",'')
-        let b_time = (b["time"]).replace(":",'')
-        if (parseInt(a_time) < parseInt(b_time)){
-            return -1
-        }
-        else{
-            return 1
-        }
-    })
-    return todos_list
+function setTodo(task, position) {
+  const done_list = document.getElementById("done_list");
+  const task_name = document.createElement("span");
+  const task_item = document.createElement("li");
+  const task_action = document.createElement("div");
+  const task_delete_btn = document.createElement("button");
+  const task_edit_btn = document.createElement("button");
+
+  task_delete_btn.innerHTML = "DELETE";
+  task_delete_btn.addEventListener("click", deleteTodo);
+  task_edit_btn.innerHTML = "EDIT";
+  task_edit_btn.addEventListener("click", editTodo);
+  task_action.appendChild(task_delete_btn);
+  task_action.appendChild(task_edit_btn);
+  task_item.setAttribute("id", "todo_item");
+  task_name.innerHTML = task;
+  task_item.append(task_name, task_action);
+  task_item.setAttribute("todo_id", position);
+  done_list.appendChild(task_item);
 }
 
-function completeTodo(evt){
+function addTodo(task) {
+  const done_list = document.getElementById("done_list");
+  const task_name = document.createElement("span");
+  const task_item = document.createElement("li");
+  const task_action = document.createElement("div");
+  const task_delete_btn = document.createElement("button");
+  const task_edit_btn = document.createElement("button");
 
+  task_delete_btn.innerHTML = "DELETE";
+  task_delete_btn.addEventListener("click", deleteTodo);
+  task_edit_btn.innerHTML = "EDIT";
+  task_edit_btn.addEventListener("click", editTodo);
+  task_action.appendChild(task_delete_btn);
+  task_action.appendChild(task_edit_btn);
+  task_item.setAttribute("id", "todo_item");
+  task_name.innerHTML = task;
+  task_item.append(task_name, task_action);
+
+  //save to local storage
+  const position = saveTodo(task);
+  task_item.setAttribute("todo_id", position);
+  done_list.appendChild(task_item);
+  return;
 }
 
-function addTodo_DOM(todos_list){
-    let todo_list = document.querySelector("#todo_list")
-    todo_list.innerHTML =""
-    todos_list.forEach((todo)=>{
-        const todo_item = document.createElement("div")
-        todo_item.setAttribute("class","todo_item")
-        todo_item.setAttribute("todo_id",`${todo["todo_id"]}`)
-        todo_item.setAttribute("status",`${todo["status"]}`)
-        todo_item.innerHTML = `
-            <input type="text" disabled value="${todo['name']}"></input>
-            <input type="text" disabled value="${todo['time']}")></input>
-            <button onclick=updateTodo(this)>Update</button>
-            <button onclick=deleteTodo(this)>Delete</button>
-        `
-        todo_list.appendChild(todo_item);
-    })
-    let todo_items = document.getElementsByClassName("todo_item")
-    console.log(todo_items)
-    todo_items.forEach((item)=>{
-        item.addEventListener("click",completeTodo)
-    })
+function deleteTodo(e) {
+  const task2delete = e.target.parentElement.parentElement;
+  const task_id = task2delete.getAttribute("todo_id");
+  task2delete.remove();
+  let stored_todos = JSON.parse(localStorage.getItem("todos"));
+  stored_todos.splice(task_id, 1);
+  localStorage.setItem("todos", stored_todos);
+  return;
 }
 
-function addDone_DOM(done_list){
-    done_todos_section.innerHTML = ""
-    done_list.forEach((item)=>{
-        done_item = document.createElement("span")
-        done_item.setAttribute("status",`${item["status"]}`)
-        done_item.innerHTML =`${item["name"]}`
-        done_todos_section.appendChild(done_item)
-    })
-
+function editTodo(task) {
+  return;
 }
 
-function deleteTodo_DOM(item_id){
-    todos = todos.filter(item => {
-
-        return item["todo_id"] != item_id
-    })
-    addTodo_DOM(todos)
-    localStorage.setItem("todos",JSON.stringify(todos))
+function fetchTodos() {
+  let stored_todos = JSON.parse(localStorage.getItem("todos"));
+  const done_list = document.getElementById("done_list");
+  done_list.innerHTML = "";
+  if (stored_todos != null) {
+    stored_todos.forEach((todo, pos) => {
+      setTodo(todo, pos);
+    });
+  }
 }
 
+const add_todo_btn = document.getElementById("add_todo_btn");
 
-function addTodo(evt){
-    const task_name = document.querySelector("#user_input > input:nth-of-type(1)")
-    const task_time = document.querySelector("#user_input > input:nth-of-type(2)")
+add_todo_btn.addEventListener("click", (e) => {
+  const new_todo = document.querySelector("#user_input input");
+  addTodo(new_todo.value);
+});
 
-    if (isBlank(task_name.value) || task_time.value == ""){
-        return
-    }
-
-    let todo = {todo_id:Date.now(),name:task_name.value,time:task_time.value,status:"incomplete"};
-
-    todos.push(todo)
-
-    todos = sortTodos(todos);
-
-    addTodo_DOM(todos)
-
-    localStorage.setItem("todos",JSON.stringify(todos))
-
-}
-
-
-function updateTodo(evt){
-    const todo_item_name = evt.parentElement.children[0]
-    const todo_item_time = evt.parentElement.children[1]
-    let task_name = document.querySelector("#user_input > input:nth-of-type(1)")
-    let task_time = document.querySelector("#user_input > input:nth-of-type(2)")
-    task_name.value = `${todo_item_name.value}`
-    task_time.value = `${todo_item_time.value}`
-    deleteTodo(evt)
-
-}
-
-
-function deleteTodo(evt){
-    let item_id = evt.parentElement.getAttribute("todo_id")
-    deleteTodo_DOM(item_id)
-}
-
-function loadTodos(evt){
-    if (localStorage.getItem("todos") != null)
-    {
-        todos = localStorage.getItem("todos")
-        todos = JSON.parse(todos)
-        addTodo_DOM(todos)
-    }
-    else{
-        todos = []
-    }
-    if (localStorage.getItem("done_todos") != null)
-    {
-        done_todos = localStorage.getItem("done_todos")
-        done_todos = JSON.parse(done_todos)
-        addDone_DOM(done_todos)
-    }
-    else{
-        done_todos = []
-    }
-        
-}
-
-
-function checkTodos(){
-    todos = localStorage.getItem("todos")
-    todos = JSON.parse(todos)
-    if (todos != []){
-        done_todos = todos.filter((item)=>{
-            let item_timestamp =new Date(`${today_date} ${item["time"]}`).getTime()
-            let today_timestamp = TODAY.getTime()
-            if (today_timestamp > item_timestamp){
-                return true
-            }
-            else{
-                return false
-            }
-        })
-    }
-    done_todos.forEach((done)=>{
-        deleteTodo_DOM(done["todo_id"])
-    })
-    //addDone_DOM(done_todos)
-
-
-
-}
-
-setInterval(checkTodos,60000)
-
-checkTodos()
+fetchTodos();

@@ -1,113 +1,151 @@
-:root{
-    --color_1:hsl(0, 0%, 19%);
-    --color_2:hsl(60, 100%, 76%);
-    --color_3:hsl(120, 100%, 73%);
-    --color_4:rgb(255, 94, 94);
-    --color_5:hsl(188, 100%, 71%);
+:root {
+  --color_1: hsl(0, 0%, 19%);
+  --color_2: hsl(46, 100%, 80%);
+  --color_2_1: hsl(46, 100%, 60%);
+  --color_3: hsl(120, 100%, 73%);
+  --color_4: rgb(255, 94, 94);
+  --color_5: hsl(188, 100%, 71%);
 }
 
-*,::before,::after{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    border: 0;
-    outline: none;
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+  outline: none;
 }
 
-body{
-    width: 100dvw;
-    height: 100dvh;
-    background-color: var(--color_1);
+body {
+  width: 100dvw;
+  height: 100dvh;
+  background-color: rgb(120, 98, 151);
 }
 
-#app_container{
-    width: 100%;
-    height: 100%;
+#app_container {
+  width: 100%;
+  height: 100%;
 }
 
-#header{
-    width: 100%;
-    height: calc(4rem + 2vh);
-    background-color: var(--color_2);
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+#header {
+  width: 80%;
+  margin: 10px auto;
+  height: calc(4rem + 2vh);
+  background-color: var(--color_1);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  color: white;
+  height: 50px;
+  border-radius: 10px;
 }
 
-#header h1{
-    font-size: 2em;
-    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 700;
-    position: relative;
-    height: 80%;
+#header h1 {
+  font-size: 2em;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  position: relative;
+  height: 80%;
 }
 
-#content{
-    width: 80%;
-    margin: 20px auto;
-    border-radius: 1px;
+#content {
+  width: 80%;
+  margin: 20px auto;
+  border-radius: 1px;
 }
 
-#input_todo{
-    width: 100%;
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin: 10px auto;
+#input_todo {
+  height: 50px;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 10px auto;
+  border-radius: 10px;
+  position: fixed;
+  bottom: 0px;
 }
 
-#input_todo div{
-    width: 80%;
+#input_todo div {
+  width: 80%;
 }
 
-#input_todo #user_input{
-    display: flex;
-    justify-content: space-between;
-    gap: 5px;
+#input_todo #user_input {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
 }
 
-#input_todo #user_input input{
-    flex: 2;
+#user_input {
+  flex: 2;
+  position: relative;
+  height: 80%;
+  margin-left: 5px;
 }
-#input_todo div button{
-    position: relative;
-    width: 100%;
+#user_input input {
+  width: 100%;
+  border-radius: 10px;
+  padding-left: 10px;
 }
-
-#todo_list, #done_list{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap; 
-    gap: 10px;
-    margin: 10px auto;
-}
-
-
-.todo_item *{
-    display: inline-block;
+#input_todo button {
+  position: relative;
+  margin-right: 5px;
+  padding: 5px;
+  background-color: var(--color_3);
+  border-radius: 10px;
+  height: 80%;
 }
 
-
-.todo_item input{
-    background-color: var(--color_5);
+#todo_list,
+#done_list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 10px auto;
 }
 
-.todo_item input::placeholder{
-    color: rgb(40, 40, 40);
+#todo_item {
+  background-color: var(--color_2);
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
 }
 
-.todo_item input:nth-child(2){
-    width: 50px;
-    text-align: center;
+#todo_item div {
+  display: flex;
+  gap: 2px;
+  align-content: center;
+  margin-right: 5px;
 }
 
+#todo_item div * {
+  padding: 5px;
+  border-radius: 3px;
+  color: rgb(49, 49, 49);
+  font-weight: bold;
+}
 
+#todo_item div :first-child {
+  background-color: red;
+}
 
-
+#todo_item div :last-child {
+  background-color: var(--color_5);
+}
